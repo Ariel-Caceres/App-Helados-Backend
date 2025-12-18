@@ -21,5 +21,25 @@ export const ventasController = {
         } catch (e) {
             res.status(404).json({ error: "No se encontró la venta" })
         }
+    },
+    async create(req: Request, res: Response) {
+        const d = new Date()
+        const año = d.getFullYear()
+        const mes = String(d.getMonth() + 1).padStart(2, "0");
+        const dia = String(d.getDate()).padStart(2, "0");
+        try {
+            const { fecha, precio, precioTotal, id, cantidad } = req.body
+            const nuevaVenta = {
+                fecha: `${año}-${mes}-${dia}`,
+                precio: precio,
+                precioTotal: precioTotal,
+                cantidad: cantidad
+            }
+            await ventasService.create(nuevaVenta)
+            res.status(201).json("Venta creada con exito")
+            return nuevaVenta
+        } catch (e) {
+            res.status(500).json("Error al crear la nueva venta")
+        }
     }
 }
