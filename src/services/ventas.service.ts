@@ -12,5 +12,8 @@ export const ventasService = {
     },
     async create(nuevaVenta: Venta) {
         return await firebaseModel.create(nuevaVenta)
+    },
+    async update(id: string, ventaActualizada: Partial<Venta>) {
+        return await firebaseModel.update(id, ventaActualizada)
     }
 }

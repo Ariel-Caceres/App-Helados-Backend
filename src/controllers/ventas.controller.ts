@@ -41,5 +41,22 @@ export const ventasController = {
         } catch (e) {
             res.status(500).json("Error al crear la nueva venta")
         }
+    },
+
+    async update(req: Request, res: Response) {
+        try {
+            const id = req.params.id
+            const { fecha, precio, precioTotal, cantidad } = req.body
+            const ventaActualizada = {
+                precio: precio,
+                precioTotal: precioTotal,
+                cantidad: cantidad
+            }
+            await ventasService.update(id, ventaActualizada)
+            res.status(201).json("Venta actualizada con éxito")
+        } catch (e) {
+            res.status(500).json("Error al actualizar la venta")
+        }
     }
+
 }

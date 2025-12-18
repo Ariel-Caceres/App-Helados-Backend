@@ -1,5 +1,5 @@
 import { db } from "../firebase/conifg"
-import { collection, doc, getDoc, getDocs, addDoc } from "firebase/firestore"
+import { collection, doc, getDoc, getDocs, addDoc, updateDoc } from "firebase/firestore"
 import { Venta } from "../types/venta.entity"
 
 export const firebaseModel = {
@@ -36,6 +36,19 @@ export const firebaseModel = {
             console.log("Error al agregar una nueva venta", e)
             throw e
         }
+    },
+
+    update: async (id: string, ventaActualizada: Partial<Venta>) => {
+        try {
+            const venta = doc(db, "ventas", id)
+            await updateDoc(venta, ventaActualizada)
+            console.log("Venta editada con éxito")
+            return venta
+        } catch (e) {
+            console.log("Error al actualizar la venta ")
+            throw e
+        }
+
     }
 
 }
