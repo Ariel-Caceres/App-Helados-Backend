@@ -22,6 +22,7 @@ export const ventasController = {
             res.status(404).json({ error: "No se encontró la venta" })
         }
     },
+
     async create(req: Request, res: Response) {
         const d = new Date()
         const año = d.getFullYear()
@@ -56,6 +57,16 @@ export const ventasController = {
             res.status(201).json("Venta actualizada con éxito")
         } catch (e) {
             res.status(500).json("Error al actualizar la venta")
+        }
+    },
+
+    async delete(req: Request, res: Response) {
+        try {
+            const id = req.params.id
+            await ventasService.delete(id)
+            res.status(200).json("Venta eliminada con éxito")
+        } catch (e) {
+            res.status(500).json("Error al eliminar la venta")
         }
     }
 

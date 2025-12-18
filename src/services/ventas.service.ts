@@ -15,5 +15,8 @@ export const ventasService = {
     },
     async update(id: string, ventaActualizada: Partial<Venta>) {
         return await firebaseModel.update(id, ventaActualizada)
+    },
+    async delete(id: string) {
+        return await firebaseModel.delete(id)
     }
 }

@@ -1,5 +1,5 @@
 import { db } from "../firebase/conifg"
-import { collection, doc, getDoc, getDocs, addDoc, updateDoc } from "firebase/firestore"
+import { collection, doc, getDoc, getDocs, addDoc, updateDoc, deleteDoc } from "firebase/firestore"
 import { Venta } from "../types/venta.entity"
 
 export const firebaseModel = {
@@ -49,6 +49,14 @@ export const firebaseModel = {
             throw e
         }
 
-    }
+    },
 
+    delete: async (id: string) => {
+        try {
+            await deleteDoc(doc(db, "ventas", id))
+            console.log("Venta eliminada con éxito")
+        } catch (e) {
+            console.log("Error al eliminar venta")
+        }
+    }
 }
