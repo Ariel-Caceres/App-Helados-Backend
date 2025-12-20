@@ -37,7 +37,7 @@ export const ventasController = {
                 cantidad: cantidad
             }
             await ventasService.create(nuevaVenta)
-            res.status(201).json("Venta creada con exito")
+            res.status(201).json("Venta creada con éxito")
             return nuevaVenta
         } catch (e) {
             res.status(500).json("Error al crear la nueva venta")

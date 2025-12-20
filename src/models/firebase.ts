@@ -36,6 +36,7 @@ export const firebaseModel = {
             console.log("Error al agregar una nueva venta", e)
             throw e
         }
+
     },
 
     update: async (id: string, ventaActualizada: Partial<Venta>) => {

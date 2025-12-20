@@ -1,8 +1,5 @@
 import cors from "cors";
 import express from "express";
-import { NextFunction } from 'express';
-import type { Request } from "express";
-import type { Response } from "express";
 import { router } from "./routes/ventas.routes"
 const PORT = 3000;
 const app = express();
