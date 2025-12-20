@@ -6,7 +6,10 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 app.use(cors({
-    origin: 'http://localhost:5173', // Allow your local frontend
+    origin: [
+        'http://localhost:5173',
+        'https://app-helados.vercel.app'
+    ],
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true
