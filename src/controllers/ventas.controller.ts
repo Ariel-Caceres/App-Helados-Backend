@@ -29,12 +29,13 @@ export const ventasController = {
         const mes = String(d.getMonth() + 1).padStart(2, "0");
         const dia = String(d.getDate()).padStart(2, "0");
         try {
-            const { fecha, precio, precioTotal, id, cantidad } = req.body
+            const { fecha, precio, precioTotal, id, cantidad, onDb } = req.body
             const nuevaVenta = {
                 fecha: `${año}-${mes}-${dia}`,
                 precio: precio,
                 precioTotal: precioTotal,
-                cantidad: cantidad
+                cantidad: cantidad,
+                onDb: onDb
             }
             await ventasService.create(nuevaVenta)
             res.status(201).json("Venta creada con éxito")
