@@ -11,7 +11,7 @@ export const firebaseModel = {
                 id: doc.id,
                 ...doc.data()
             }))
-            return { ventas: ventas }
+            return ventas
         } catch (e) {
             console.log("Error al obtener el documento")
             throw e
@@ -22,7 +22,7 @@ export const firebaseModel = {
         try {
             const docRef = doc(db, "ventas", id)
             const docSnap = await getDoc(docRef)
-            return ({ venta: docSnap.data() as Venta })
+            return (docSnap.data() as Venta)
         } catch (e) {
             console.log("Error al obtener el documento", e)
             throw e
