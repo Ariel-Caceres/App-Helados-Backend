@@ -12,10 +12,13 @@
     "start": "node dist/app.js"
   },
   "dependencies": {
+    "@firebase/app": "^0.14.6",
+    "@firebase/firestore": "^4.9.3",
     "cors": "^2.8.5",
     "dotenv": "^17.2.3",
     "express": "^5.2.1",
-    "firebase": "^12.7.0"
+    "firebase": "^12.7.0",
+    "firebase-admin": "^13.6.0"
   },
   "devDependencies": {
     "@types/cors": "^2.8.19",
