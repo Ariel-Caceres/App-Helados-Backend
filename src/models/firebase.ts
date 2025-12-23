@@ -1,63 +1,161 @@
 import { db } from "../firebase/conifg"
-import { collection, doc, getDoc, getDocs, addDoc, updateDoc, deleteDoc } from "firebase/firestore"
+import { collection, doc, getDoc, getDocs, addDoc, updateDoc, deleteDoc, setDoc } from "firebase/firestore"
 import { Venta } from "../types/venta.entity"
 
 export const firebaseModel = {
-    getAll: async () => {
-        try {
+    // getAll: async (mes: string) => {
+    //     try {
+    //         const querySnapshot = await getDocs(collection(db, "ventas"))
+    //         const ventas = querySnapshot.docs.map(doc => ({
+    //             id: doc.id,
+    //             ...doc.data()
+    //         })) as unknown as Venta[]
 
-            const querySnapshot = await getDocs(collection(db, "ventas"))
+    //         const ventasPorMes = ventas.filter(v => {
+    //             const mesVenta = Number(v.fecha.split("-")[1]);
+    //             const mesBuscado = Number(mes);
+    //             return mesVenta === mesBuscado;
+    //         })
+    //         return ventasPorMes
+    //     } catch (e) {
+    //         console.log("Error al obtener el documento")
+    //         throw e
+    //     }
+    // },
+    getAll: async (mes: string) => {
+        try {
+            // ✅ En el Back se usa .collection().get()
+            const querySnapshot = await db.collection("ventas").get();
+
+            // Mapeamos los docs. Nota: .data() en el Admin SDK es igual,
+            // pero el snapshot viene directamente de la colección.
             const ventas = querySnapshot.docs.map(doc => ({
                 id: doc.id,
                 ...doc.data()
-            }))
-            return ventas
+            })) as unknown as Venta[];
+
+            const ventasPorMes = ventas.filter(v => {
+                // Tu lógica de filtrado sigue igual y está perfecta
+                const mesVenta = Number(v.fecha.split("-")[1]);
+                const mesBuscado = Number(mes);
+                return mesVenta === mesBuscado;
+            });
+
+            return ventasPorMes;
         } catch (e) {
-            console.log("Error al obtener el documento")
-            throw e
+            console.error("Error al obtener las ventas de la DB:", e);
+            throw e;
         }
     },
+    // getById: async (id: string) => {
+    //     try {
+    //         const docRef = doc(db, "ventas", id)
+    //         const docSnap = await getDoc(docRef)
+    //         return (docSnap.data() as Venta)
+    //     } catch (e) {
+    //         console.log("Error al obtener el documento", e)
+    //         throw e
+    //     }
+    // },
 
+    // create: async (nuevaVenta: Venta) => {
+    //     try {
+    //         const objetoParaFirebase = {
+    //             fecha: nuevaVenta.fecha,
+    //             precio: Number(nuevaVenta.precio),
+    //             precioTotal: Number(nuevaVenta.precioTotal),
+    //             cantidad: Number(nuevaVenta.cantidad),
+    //             status: "synced"
+    //         };
+    //         const docRef = await addDoc(collection(db, "ventas"), objetoParaFirebase)
+    //         return docRef
+    //     } catch (e) {
+    //         console.log("Error al agregar una nueva venta", e)
+    //         throw e
+    //     }
+
+    // },
+
+    // create: async (nuevaVenta: Venta) => {
+    //     try {
+
+    //         await setDoc(doc(db, "ventas", nuevaVenta.id), nuevaVenta)
+
+    //     } catch (e) {
+    //         console.log("Error al agregar una nueva venta", e)
+    //         throw e
+    //     }
+
+    // },
+    // update: async (id: string, ventaActualizada: Partial<Venta>) => {
+    //     try {
+    //         const venta = doc(db, "ventas", id)
+    //         await updateDoc(venta, ventaActualizada)
+    //         console.log("Venta editada con éxito")
+    //         return venta
+    //     } catch (e) {
+    //         console.log("Error al actualizar la venta ")
+    //         throw e
+    //     }
+
+    // },
+
+    // delete: async (id: string) => {
+    //     try {
+    //         await deleteDoc(doc(db, "ventas", id))
+    //         console.log("Venta eliminada con éxito")
+    //     } catch (e) {
+    //         console.log("Error al eliminar venta")
+    //     }
+    // }
     getById: async (id: string) => {
         try {
-            const docRef = doc(db, "ventas", id)
-            const docSnap = await getDoc(docRef)
-            return (docSnap.data() as Venta)
+            // ✅ En Admin: .collection().doc().get()
+            const docSnap = await db.collection("ventas").doc(id).get();
+
+            if (!docSnap.exists) {
+                return null;
+            }
+
+            return { id: docSnap.id, ...docSnap.data() } as Venta;
         } catch (e) {
-            console.log("Error al obtener el documento", e)
-            throw e
+            console.log("Error al obtener el documento", e);
+            throw e;
         }
     },
 
     create: async (nuevaVenta: Venta) => {
         try {
-            const docRef = await addDoc(collection(db, "ventas"), nuevaVenta)
+            // ✅ Usamos .doc(id).set() porque vos ya traés un ID del front
+            // Si usaras .add(), Firebase crearía un ID aleatorio nuevo.
+            await db.collection("ventas").doc(nuevaVenta.id).set(nuevaVenta);
+            console.log("Venta creada con éxito en Firebase");
         } catch (e) {
-            console.log("Error al agregar una nueva venta", e)
-            throw e
+            console.log("Error al agregar una nueva venta", e);
+            throw e;
         }
-
     },
 
     update: async (id: string, ventaActualizada: Partial<Venta>) => {
         try {
-            const venta = doc(db, "ventas", id)
-            await updateDoc(venta, ventaActualizada)
-            console.log("Venta editada con éxito")
-            return venta
+            // ✅ En Admin: .collection().doc().update()
+            await db.collection("ventas").doc(id).update(ventaActualizada);
+            console.log("Venta editada con éxito");
+            return true;
         } catch (e) {
-            console.log("Error al actualizar la venta ")
-            throw e
+            console.log("Error al actualizar la venta", e);
+            throw e;
         }
-
     },
 
     delete: async (id: string) => {
         try {
-            await deleteDoc(doc(db, "ventas", id))
-            console.log("Venta eliminada con éxito")
+            // ✅ En Admin: .collection().doc().delete()
+            await db.collection("ventas").doc(id).delete();
+            console.log("Venta eliminada con éxito");
         } catch (e) {
-            console.log("Error al eliminar venta")
+            console.log("Error al eliminar venta", e);
+            throw e;
         }
     }
 }
