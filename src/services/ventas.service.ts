@@ -1,4 +1,3 @@
-import firebase from "firebase/compat/app";
 import { firebaseModel } from "../models/firebase";
 import { Venta } from "../types/venta.entity";
 

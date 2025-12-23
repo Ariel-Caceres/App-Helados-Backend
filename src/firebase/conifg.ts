@@ -5,9 +5,9 @@ import 'dotenv/config';
 // Si no existe, usamos el archivo local (para tu PC)
 let serviceAccount;
 
-if (process.env.FIREBASE_SERVICE_ACCOUNT) {
+if (process.env.serviceAccountKey) {
     // Render leerá esto como un string, así que lo convertimos a objeto
-    serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);
+    serviceAccount = JSON.parse(process.env.serviceAccountKey);
 } else {
     // En tu PC, como no existe la variable, sigue usando el JSON
     serviceAccount = require("./serviceAccountKey.json");
