@@ -1,5 +1,4 @@
 import { db } from "../firebase/conifg"
-import { collection, doc, getDoc, getDocs, addDoc, updateDoc, deleteDoc, setDoc } from "firebase/firestore"
 import { Venta } from "../types/venta.entity"
 
 export const firebaseModel = {

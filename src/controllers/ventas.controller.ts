@@ -18,10 +18,13 @@ export const ventasController = {
     async getById(req: Request, res: Response) {
         const id = req.params.id
         try {
+            console.log("🔍 Intentando obtener venta con ID:", id);
             const venta = await ventasService.getById(id)
+            console.log("✅ Venta obtenida:", venta);
             res.json(venta)
         } catch (e) {
-            res.status(404).json({ error: "No se encontró la venta" })
+            console.error("❌ Error completo:", e);
+            res.status(404).json({ error: "No se encontró la venta", details: String(e) })
         }
     },
 
