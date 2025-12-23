@@ -6,18 +6,26 @@ import 'dotenv/config';
 let serviceAccount;
 
 if (process.env.serviceAccountKey) {
-    // Render leerá esto como un string, así que lo convertimos a objeto
-    serviceAccount = JSON.parse(process.env.serviceAccountKey);
+    console.log("✅ Usando variable de entorno serviceAccountKey");
+    try {
+        serviceAccount = JSON.parse(process.env.serviceAccountKey);
+        console.log("✅ Variable parseada correctamente");
+    } catch (error) {
+        console.error("❌ Error al parsear serviceAccountKey:", error);
+        throw new Error("serviceAccountKey no es un JSON válido");
+    }
 } else {
-    // En tu PC, como no existe la variable, sigue usando el JSON
+    console.log("⚠️ No se encontró serviceAccountKey en env, usando archivo local");
     serviceAccount = require("./serviceAccountKey.json");
 }
 
 // 2. Inicializamos solo una vez
 if (!admin.apps.length) {
+    console.log("🔧 Inicializando Firebase Admin SDK");
     admin.initializeApp({
         credential: admin.credential.cert(serviceAccount)
     });
+    console.log("✅ Firebase Admin SDK inicializado");
 }
 
 // 3. Exportamos la base de datos de administrador
