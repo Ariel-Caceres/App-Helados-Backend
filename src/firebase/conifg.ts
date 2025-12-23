@@ -1,20 +1,18 @@
-// Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
-import { getFirestore } from 'firebase/firestore';
+import admin from "firebase-admin";
 import 'dotenv/config';
 
+// 1. Cargamos el archivo JSON que bajaste de Firebase
+// Asegurate de que el archivo esté en la misma carpeta y se llame así
+const serviceAccount = require("./serviceAccountKey.json");
 
-const firebaseConfig = {
-    apiKey: process.env.FIREBASE_API_KEY,
-    authDomain: process.env.FIREBASE_AUTH_DOMAIN,
-    projectId: "heladitos-backend",
-    storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
-    messagingSenderId: "275229038538",
-    appId: process.env.FIREBASE_APP_ID,
-    measurementId: "G-HS2VK86QCX"
-};
+// 2. Inicializamos solo una vez (evita errores de reinicio)
+if (!admin.apps.length) {
+    admin.initializeApp({
+        credential: admin.credential.cert(serviceAccount)
+    });
+}
 
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-export { db }
+// 3. Exportamos la base de datos de administrador
+const db = admin.firestore();
+
+export { db };
