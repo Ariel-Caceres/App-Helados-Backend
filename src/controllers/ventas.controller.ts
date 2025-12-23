@@ -1,11 +1,13 @@
 import { error } from "node:console";
 import { ventasService } from "../services/ventas.service";
 import { Request, Response } from "express"
+import { Venta } from "../types/venta.entity";
 
 export const ventasController = {
     async getAll(req: Request, res: Response) {
+        const mes = req.params.mes
         try {
-            const ventas = await ventasService.getAllSells()
+            const ventas = await ventasService.getAllSells(mes)
             res.json(ventas)
         } catch (e) {
             console.log(e)
@@ -29,17 +31,18 @@ export const ventasController = {
         const mes = String(d.getMonth() + 1).padStart(2, "0");
         const dia = String(d.getDate()).padStart(2, "0");
         try {
-            const { fecha, precio, precioTotal, id, cantidad, onDb } = req.body
-            const nuevaVenta = {
+            const { precio, precioTotal, cantidad, id } = req.body
+            const nuevaVenta: Venta = {
+                id: id,
                 fecha: `${año}-${mes}-${dia}`,
                 precio: precio,
                 precioTotal: precioTotal,
                 cantidad: cantidad,
-                onDb: onDb
+                status: "synced"
             }
+            console.log(nuevaVenta)
             await ventasService.create(nuevaVenta)
             res.status(201).json("Venta creada con éxito")
-            return nuevaVenta
         } catch (e) {
             res.status(500).json("Error al crear la nueva venta")
         }
@@ -48,7 +51,7 @@ export const ventasController = {
     async update(req: Request, res: Response) {
         try {
             const id = req.params.id
-            const { fecha, precio, precioTotal, cantidad } = req.body
+            const { precio, precioTotal, cantidad } = req.body
             const ventaActualizada = {
                 precio: precio,
                 precioTotal: precioTotal,
@@ -64,6 +67,7 @@ export const ventasController = {
     async delete(req: Request, res: Response) {
         try {
             const id = req.params.id
+            console.log(id)
             await ventasService.delete(id)
             res.status(200).json("Venta eliminada con éxito")
         } catch (e) {
