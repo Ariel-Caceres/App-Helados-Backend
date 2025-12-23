@@ -3,25 +3,7 @@ import { collection, doc, getDoc, getDocs, addDoc, updateDoc, deleteDoc, setDoc 
 import { Venta } from "../types/venta.entity"
 
 export const firebaseModel = {
-    // getAll: async (mes: string) => {
-    //     try {
-    //         const querySnapshot = await getDocs(collection(db, "ventas"))
-    //         const ventas = querySnapshot.docs.map(doc => ({
-    //             id: doc.id,
-    //             ...doc.data()
-    //         })) as unknown as Venta[]
 
-    //         const ventasPorMes = ventas.filter(v => {
-    //             const mesVenta = Number(v.fecha.split("-")[1]);
-    //             const mesBuscado = Number(mes);
-    //             return mesVenta === mesBuscado;
-    //         })
-    //         return ventasPorMes
-    //     } catch (e) {
-    //         console.log("Error al obtener el documento")
-    //         throw e
-    //     }
-    // },
     getAll: async (mes: string) => {
         try {
             // ✅ En el Back se usa .collection().get()
@@ -47,70 +29,9 @@ export const firebaseModel = {
             throw e;
         }
     },
-    // getById: async (id: string) => {
-    //     try {
-    //         const docRef = doc(db, "ventas", id)
-    //         const docSnap = await getDoc(docRef)
-    //         return (docSnap.data() as Venta)
-    //     } catch (e) {
-    //         console.log("Error al obtener el documento", e)
-    //         throw e
-    //     }
-    // },
 
-    // create: async (nuevaVenta: Venta) => {
-    //     try {
-    //         const objetoParaFirebase = {
-    //             fecha: nuevaVenta.fecha,
-    //             precio: Number(nuevaVenta.precio),
-    //             precioTotal: Number(nuevaVenta.precioTotal),
-    //             cantidad: Number(nuevaVenta.cantidad),
-    //             status: "synced"
-    //         };
-    //         const docRef = await addDoc(collection(db, "ventas"), objetoParaFirebase)
-    //         return docRef
-    //     } catch (e) {
-    //         console.log("Error al agregar una nueva venta", e)
-    //         throw e
-    //     }
-
-    // },
-
-    // create: async (nuevaVenta: Venta) => {
-    //     try {
-
-    //         await setDoc(doc(db, "ventas", nuevaVenta.id), nuevaVenta)
-
-    //     } catch (e) {
-    //         console.log("Error al agregar una nueva venta", e)
-    //         throw e
-    //     }
-
-    // },
-    // update: async (id: string, ventaActualizada: Partial<Venta>) => {
-    //     try {
-    //         const venta = doc(db, "ventas", id)
-    //         await updateDoc(venta, ventaActualizada)
-    //         console.log("Venta editada con éxito")
-    //         return venta
-    //     } catch (e) {
-    //         console.log("Error al actualizar la venta ")
-    //         throw e
-    //     }
-
-    // },
-
-    // delete: async (id: string) => {
-    //     try {
-    //         await deleteDoc(doc(db, "ventas", id))
-    //         console.log("Venta eliminada con éxito")
-    //     } catch (e) {
-    //         console.log("Error al eliminar venta")
-    //     }
-    // }
     getById: async (id: string) => {
         try {
-            // ✅ En Admin: .collection().doc().get()
             const docSnap = await db.collection("ventas").doc(id).get();
 
             if (!docSnap.exists) {
@@ -126,8 +47,6 @@ export const firebaseModel = {
 
     create: async (nuevaVenta: Venta) => {
         try {
-            // ✅ Usamos .doc(id).set() porque vos ya traés un ID del front
-            // Si usaras .add(), Firebase crearía un ID aleatorio nuevo.
             await db.collection("ventas").doc(nuevaVenta.id).set(nuevaVenta);
             console.log("Venta creada con éxito en Firebase");
         } catch (e) {
@@ -138,7 +57,6 @@ export const firebaseModel = {
 
     update: async (id: string, ventaActualizada: Partial<Venta>) => {
         try {
-            // ✅ En Admin: .collection().doc().update()
             await db.collection("ventas").doc(id).update(ventaActualizada);
             console.log("Venta editada con éxito");
             return true;
@@ -150,7 +68,6 @@ export const firebaseModel = {
 
     delete: async (id: string) => {
         try {
-            // ✅ En Admin: .collection().doc().delete()
             await db.collection("ventas").doc(id).delete();
             console.log("Venta eliminada con éxito");
         } catch (e) {
