@@ -5,17 +5,17 @@ import 'dotenv/config';
 // Si no existe, usamos el archivo local (para tu PC)
 let serviceAccount;
 
-if (process.env.serviceAccountKey) {
-    console.log("✅ Usando variable de entorno serviceAccountKey");
+if (process.env['serviceAccountKey.json']) {
+    console.log("✅ Usando variable de entorno serviceAccountKey.json");
     try {
-        serviceAccount = JSON.parse(process.env.serviceAccountKey);
+        serviceAccount = JSON.parse(process.env['serviceAccountKey.json']);
         console.log("✅ Variable parseada correctamente");
     } catch (error) {
-        console.error("❌ Error al parsear serviceAccountKey:", error);
-        throw new Error("serviceAccountKey no es un JSON válido");
+        console.error("❌ Error al parsear serviceAccountKey.json:", error);
+        throw new Error("serviceAccountKey.json no es un JSON válido");
     }
 } else {
-    console.log("⚠️ No se encontró serviceAccountKey en env, usando archivo local");
+    console.log("⚠️ No se encontró serviceAccountKey.json en env, usando archivo local");
     serviceAccount = require("./serviceAccountKey.json");
 }
 
