@@ -4,8 +4,8 @@ import path from "path";
 
 let serviceAccount;
 
-const renderPath = "/etc/secrets/serviceAccountKey.json";
-const localPath = path.resolve(process.cwd(), "serviceAccountKey.json");
+const renderPath = "/etc/secrets/key.json";
+const localPath = path.resolve(process.cwd(), "key.json");
 
 try {
     if (fs.existsSync(renderPath)) {
