@@ -5,10 +5,7 @@ const PORT = 3000;
 const app = express();
 app.use(express.json());
 app.use(cors());
-console.log("*****************************************");
-console.log("EL SERVIDOR SE ESTÁ ENCENDIENDO...");
-console.log("PROYECTO ID:", process.env.FIREBASE_PROJECT_ID);
-console.log("*****************************************");
+
 app.use(cors({
     origin: [
         'http://localhost:5173',
