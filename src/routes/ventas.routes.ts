@@ -7,3 +7,6 @@ router.get("/sale/:id", ventasController.getById)
 router.post("/sell", ventasController.create)
 router.put("/edit/:id", ventasController.update)
 router.delete("/delete/:id", ventasController.delete)
+router.get("/", (_req, res) => {
+    res.send("🔥 Backend funcionando en Render");
+});
