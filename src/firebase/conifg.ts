@@ -1,27 +1,31 @@
 import admin from "firebase-admin";
 import fs from "fs";
+import path from "path";
 
 let serviceAccount;
 
-// RUTA 1: La de Render (Secret Files siempre van a /etc/secrets/)
-const renderPath = "/etc/secrets/key.json";
-// RUTA 2: La de tu PC (ajustala a donde tengas el archivo real)
-const localPath = "./key.json";
+const renderPath = "/etc/secrets/serviceAccountKey.json";
+const localPath = path.resolve(process.cwd(), "serviceAccountKey.json");
 
-if (fs.existsSync(renderPath)) {
-    // Si existe la ruta de Render, la usamos
-    serviceAccount = require(renderPath);
-    console.log("🚀 Firebase: Cargado desde Secret File (Render)");
-} else {
-    // Si no, buscamos el archivo local
-    serviceAccount = require(localPath);
-    console.log("🏠 Firebase: Cargado desde archivo local");
-}
+try {
+    if (fs.existsSync(renderPath)) {
+        console.log("✅ Render: Detectado Secret File en /etc/secrets/");
+        serviceAccount = JSON.parse(fs.readFileSync(renderPath, 'utf8'));
+    } else if (fs.existsSync(localPath)) {
+        console.log("🏠 Local: Detectado archivo en raíz:", localPath);
+        serviceAccount = require(localPath);
+    } else {
+        throw new Error("❌ No se encontró el archivo de credenciales en ninguna ruta.");
+    }
 
-if (!admin.apps.length) {
-    admin.initializeApp({
-        credential: admin.credential.cert(serviceAccount)
-    });
+    if (!admin.apps.length) {
+        admin.initializeApp({
+            credential: admin.credential.cert(serviceAccount)
+        });
+        console.log("🚀 Firebase Admin inicializado correctamente.");
+    }
+} catch (error: any) {
+    console.error("🔥 Error crítico en Firebase Config:", error.message);
 }
 
 export const db = admin.firestore();
