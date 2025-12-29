@@ -29,15 +29,12 @@ export const ventasController = {
     },
 
     async create(req: Request, res: Response) {
-        const d = new Date()
-        const año = d.getFullYear()
-        const mes = String(d.getMonth() + 1).padStart(2, "0");
-        const dia = String(d.getDate()).padStart(2, "0");
+
         try {
-            const { precio, precioTotal, cantidad, id } = req.body
+            const { precio, precioTotal, cantidad, id, fecha } = req.body
             const nuevaVenta: Venta = {
                 id: id,
-                fecha: `${año}-${mes}-${dia}`,
+                fecha: fecha,
                 precio: precio,
                 precioTotal: precioTotal,
                 cantidad: cantidad,
