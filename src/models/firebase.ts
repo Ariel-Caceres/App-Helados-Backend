@@ -1,4 +1,5 @@
 import { db } from "../firebase/conifg"
+import { Compra } from "../types/compra.entity";
 import { Venta } from "../types/venta.entity"
 
 export const firebaseModel = {
@@ -70,6 +71,24 @@ export const firebaseModel = {
         }
     },
 
+    getAllPurchases: async (mes: string) => {
+        try {
+            const querySnapshot = await db.collection("compras").get()
+            const compras = querySnapshot.docs.map(c => ({
+                id: c.id,
+                ...c.data()
+            })) as unknown as Compra[]
 
+            const comprasMes = compras.filter(c => {
+                const mesCompra = c.fecha.split("-")[1]
+                const mesBuscado = mes
+                return mesCompra == mesBuscado
+
+            })
+            return comprasMes
+        } catch (e) {
+            console.log(e)
+        }
+    }
 
 }

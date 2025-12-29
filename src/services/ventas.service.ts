@@ -3,7 +3,7 @@ import { Venta } from "../types/venta.entity";
 
 
 export const ventasService = {
-    async getAllSells(mes: string) {
+    async getAllSales(mes: string) {
         return await firebaseModel.getAllSales(mes)
     },
     async getById(id: string) {

@@ -7,7 +7,7 @@ export const ventasController = {
     async getAll(req: Request, res: Response) {
         const mes = req.params.mes
         try {
-            const ventas = await ventasService.getAllSells(mes)
+            const ventas = await ventasService.getAllSales(mes)
             res.json(ventas)
         } catch (e) {
             console.log(e)
