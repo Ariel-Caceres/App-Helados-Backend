@@ -4,18 +4,18 @@ import { Venta } from "../types/venta.entity";
 
 export const ventasService = {
     async getAllSells(mes: string) {
-        return await firebaseModel.getAll(mes)
+        return await firebaseModel.getAllSales(mes)
     },
     async getById(id: string) {
-        return await firebaseModel.getById(id)
+        return await firebaseModel.getSaleById(id)
     },
     async create(nuevaVenta: Venta) {
-        return await firebaseModel.create(nuevaVenta)
+        return await firebaseModel.createSale(nuevaVenta)
     },
     async update(id: string, ventaActualizada: Partial<Venta>) {
-        return await firebaseModel.update(id, ventaActualizada)
+        return await firebaseModel.updateSale(id, ventaActualizada)
     },
     async delete(id: string) {
-        return await firebaseModel.delete(id)
+        return await firebaseModel.deleteSale(id)
     }
 }
