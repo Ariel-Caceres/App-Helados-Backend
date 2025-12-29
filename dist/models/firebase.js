@@ -2,27 +2,37 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.firebaseModel = void 0;
 const conifg_1 = require("../firebase/conifg");
-const firestore_1 = require("firebase/firestore");
 exports.firebaseModel = {
-    getAll: async () => {
+    getAll: async (mes) => {
         try {
-            const querySnapshot = await (0, firestore_1.getDocs)((0, firestore_1.collection)(conifg_1.db, "ventas"));
+            // ✅ En el Back se usa .collection().get()
+            const querySnapshot = await conifg_1.db.collection("ventas").get();
+            // Mapeamos los docs. Nota: .data() en el Admin SDK es igual,
+            // pero el snapshot viene directamente de la colección.
             const ventas = querySnapshot.docs.map(doc => ({
                 id: doc.id,
                 ...doc.data()
             }));
-            return { ventas: ventas };
+            const ventasPorMes = ventas.filter(v => {
+                // Tu lógica de filtrado sigue igual y está perfecta
+                const mesVenta = Number(v.fecha.split("-")[1]);
+                const mesBuscado = Number(mes);
+                return mesVenta === mesBuscado;
+            });
+            return ventasPorMes;
         }
         catch (e) {
-            console.log("Error al obtener el documento");
+            console.error("Error al obtener las ventas de la DB:", e);
             throw e;
         }
     },
     getById: async (id) => {
         try {
-            const docRef = (0, firestore_1.doc)(conifg_1.db, "ventas", id);
-            const docSnap = await (0, firestore_1.getDoc)(docRef);
-            return ({ venta: docSnap.data() });
+            const docSnap = await conifg_1.db.collection("ventas").doc(id).get();
+            if (!docSnap.exists) {
+                return null;
+            }
+            return { id: docSnap.id, ...docSnap.data() };
         }
         catch (e) {
             console.log("Error al obtener el documento", e);
@@ -31,7 +41,8 @@ exports.firebaseModel = {
     },
     create: async (nuevaVenta) => {
         try {
-            const docRef = await (0, firestore_1.addDoc)((0, firestore_1.collection)(conifg_1.db, "ventas"), nuevaVenta);
+            await conifg_1.db.collection("ventas").doc(nuevaVenta.id).set(nuevaVenta);
+            console.log("Venta creada con éxito en Firebase");
         }
         catch (e) {
             console.log("Error al agregar una nueva venta", e);
@@ -40,23 +51,23 @@ exports.firebaseModel = {
     },
     update: async (id, ventaActualizada) => {
         try {
-            const venta = (0, firestore_1.doc)(conifg_1.db, "ventas", id);
-            await (0, firestore_1.updateDoc)(venta, ventaActualizada);
+            await conifg_1.db.collection("ventas").doc(id).update(ventaActualizada);
             console.log("Venta editada con éxito");
-            return venta;
+            return true;
         }
         catch (e) {
-            console.log("Error al actualizar la venta ");
+            console.log("Error al actualizar la venta", e);
             throw e;
         }
     },
     delete: async (id) => {
         try {
-            await (0, firestore_1.deleteDoc)((0, firestore_1.doc)(conifg_1.db, "ventas", id));
+            await conifg_1.db.collection("ventas").doc(id).delete();
             console.log("Venta eliminada con éxito");
         }
         catch (e) {
-            console.log("Error al eliminar venta");
+            console.log("Error al eliminar venta", e);
+            throw e;
         }
     }
 };

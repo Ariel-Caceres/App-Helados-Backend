@@ -3,8 +3,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.ventasService = void 0;
 const firebase_1 = require("../models/firebase");
 exports.ventasService = {
-    async getAllSells() {
-        return await firebase_1.firebaseModel.getAll();
+    async getAllSells(mes) {
+        return await firebase_1.firebaseModel.getAll(mes);
     },
     async getById(id) {
         return await firebase_1.firebaseModel.getById(id);

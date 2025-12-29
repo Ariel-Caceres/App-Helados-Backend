@@ -4,8 +4,9 @@ exports.ventasController = void 0;
 const ventas_service_1 = require("../services/ventas.service");
 exports.ventasController = {
     async getAll(req, res) {
+        const mes = req.params.mes;
         try {
-            const ventas = await ventas_service_1.ventasService.getAllSells();
+            const ventas = await ventas_service_1.ventasService.getAllSells(mes);
             res.json(ventas);
         }
         catch (e) {
@@ -16,11 +17,14 @@ exports.ventasController = {
     async getById(req, res) {
         const id = req.params.id;
         try {
+            console.log("🔍 Intentando obtener venta con ID:", id);
             const venta = await ventas_service_1.ventasService.getById(id);
+            console.log("✅ Venta obtenida:", venta);
             res.json(venta);
         }
         catch (e) {
-            res.status(404).json({ error: "No se encontró la venta" });
+            console.error("❌ Error completo:", e);
+            res.status(404).json({ error: "No se encontró la venta", details: String(e) });
         }
     },
     async create(req, res) {
@@ -29,16 +33,18 @@ exports.ventasController = {
         const mes = String(d.getMonth() + 1).padStart(2, "0");
         const dia = String(d.getDate()).padStart(2, "0");
         try {
-            const { fecha, precio, precioTotal, id, cantidad } = req.body;
+            const { precio, precioTotal, cantidad, id } = req.body;
             const nuevaVenta = {
+                id: id,
                 fecha: `${año}-${mes}-${dia}`,
                 precio: precio,
                 precioTotal: precioTotal,
-                cantidad: cantidad
+                cantidad: cantidad,
+                status: "synced"
             };
+            console.log(nuevaVenta);
             await ventas_service_1.ventasService.create(nuevaVenta);
-            res.status(201).json("Venta creada con exito");
-            return nuevaVenta;
+            res.status(201).json("Venta creada con éxito");
         }
         catch (e) {
             res.status(500).json("Error al crear la nueva venta");
@@ -47,7 +53,7 @@ exports.ventasController = {
     async update(req, res) {
         try {
             const id = req.params.id;
-            const { fecha, precio, precioTotal, cantidad } = req.body;
+            const { precio, precioTotal, cantidad } = req.body;
             const ventaActualizada = {
                 precio: precio,
                 precioTotal: precioTotal,
@@ -63,6 +69,7 @@ exports.ventasController = {
     async delete(req, res) {
         try {
             const id = req.params.id;
+            console.log(id);
             await ventas_service_1.ventasService.delete(id);
             res.status(200).json("Venta eliminada con éxito");
         }
