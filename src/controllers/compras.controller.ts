@@ -1,6 +1,8 @@
 import { comprasService } from "../services/compras.service";
 import { Request, Response } from "express";
 import { Compra } from "../types/compra.entity";
+import { firebaseModel } from "../models/firebase";
+
 export const comprasController = {
     async getAllPurchases(req: Request, res: Response) {
         try {
@@ -14,13 +16,13 @@ export const comprasController = {
     },
 
     async createPurchase(req: Request, res: Response) {
-        const d = new Date()
-        const año = d.getFullYear()
-        const mes = String(d.getMonth() + 1).padStart(2, "0");
-        const dia = String(d.getDate()).padStart(2, "0");
 
         try {
-            const { fecha, id, precio, cantidad } = req.body
+            const { id, precio, cantidad, fecha } = req.body
+            if (!id || !precio || !cantidad || !fecha) {
+                res.status(500).json("faltan datos obligatorios")
+                return
+            }
             const nuevaCompra: Compra = {
                 id: id,
                 fecha: fecha,
@@ -33,6 +35,16 @@ export const comprasController = {
         } catch (e) {
             console.log(e)
             res.status(500).json("Error al crear la compra")
+        }
+    },
+
+    async getPurchaseById(req: Request, res: Response) {
+        try {
+            const id = req.params.id
+            const compra = await firebaseModel.getPurchaseById(id)
+            res.json(compra)
+        } catch (e) {
+            res.status(500).json({ error: "Error al obtener compra", e })
         }
     }
 }

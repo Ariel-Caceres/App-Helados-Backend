@@ -8,5 +8,9 @@ export const comprasService = {
 
     async createPurchase(nuevaCompra: Compra) {
         return await firebaseModel.createPurchase(nuevaCompra)
+    },
+
+    async getPurchaseById(id: string) {
+        return await firebaseModel.getPurchaseById(id)
     }
 }

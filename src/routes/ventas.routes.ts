@@ -13,6 +13,7 @@ router.delete("/delete/:id", ventasController.delete);
 
 router.get("/purchases", comprasController.getAllPurchases)
 router.post("/purchase", comprasController.createPurchase)
+router.get("/purchase/:id", comprasController.getPurchaseById)
 
 
 

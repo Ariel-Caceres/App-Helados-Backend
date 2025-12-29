@@ -98,6 +98,20 @@ export const firebaseModel = {
         } catch (e) {
             console.log("Error al crear venta en Firebase", e)
         }
+    },
+
+    getPurchaseById: async (id: string) => {
+        try {
+            const querySnapshot = await db.collection("compras").doc(id).get()
+            if (!querySnapshot.exists) {
+                return null
+            }
+            const compra = { id: querySnapshot.id, ...querySnapshot.data() } as Compra
+            return compra
+        } catch (e) {
+            console.log("Error al obtener el documento", e);
+            throw e
+        }
     }
 
 }
