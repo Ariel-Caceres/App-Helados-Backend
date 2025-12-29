@@ -3,20 +3,15 @@ import { Venta } from "../types/venta.entity"
 
 export const firebaseModel = {
 
-    getAll: async (mes: string) => {
+    getAllSales: async (mes: string) => {
         try {
-            // ✅ En el Back se usa .collection().get()
             const querySnapshot = await db.collection("ventas").get();
-
-            // Mapeamos los docs. Nota: .data() en el Admin SDK es igual,
-            // pero el snapshot viene directamente de la colección.
             const ventas = querySnapshot.docs.map(doc => ({
                 id: doc.id,
                 ...doc.data()
             })) as unknown as Venta[];
 
             const ventasPorMes = ventas.filter(v => {
-                // Tu lógica de filtrado sigue igual y está perfecta
                 const mesVenta = Number(v.fecha.split("-")[1]);
                 const mesBuscado = Number(mes);
                 return mesVenta === mesBuscado;
@@ -29,7 +24,7 @@ export const firebaseModel = {
         }
     },
 
-    getById: async (id: string) => {
+    getSaleById: async (id: string) => {
         try {
             const docSnap = await db.collection("ventas").doc(id).get();
 
@@ -44,7 +39,7 @@ export const firebaseModel = {
         }
     },
 
-    create: async (nuevaVenta: Venta) => {
+    createSale: async (nuevaVenta: Venta) => {
         try {
             await db.collection("ventas").doc(nuevaVenta.id).set(nuevaVenta);
             console.log("Venta creada con éxito en Firebase");
@@ -54,7 +49,7 @@ export const firebaseModel = {
         }
     },
 
-    update: async (id: string, ventaActualizada: Partial<Venta>) => {
+    updateSale: async (id: string, ventaActualizada: Partial<Venta>) => {
         try {
             await db.collection("ventas").doc(id).update(ventaActualizada);
             console.log("Venta editada con éxito");
@@ -65,7 +60,7 @@ export const firebaseModel = {
         }
     },
 
-    delete: async (id: string) => {
+    deleteSale: async (id: string) => {
         try {
             await db.collection("ventas").doc(id).delete();
             console.log("Venta eliminada con éxito");
@@ -73,5 +68,8 @@ export const firebaseModel = {
             console.log("Error al eliminar venta", e);
             throw e;
         }
-    }
+    },
+
+
+
 }
