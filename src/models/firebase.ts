@@ -89,6 +89,15 @@ export const firebaseModel = {
         } catch (e) {
             console.log(e)
         }
+    },
+
+    createPurchase: async (nuevaCompra: Compra) => {
+        try {
+            await db.collection("compras").doc(nuevaCompra.id).set(nuevaCompra)
+            console.log("Compra creada con éxito en Firebase")
+        } catch (e) {
+            console.log("Error al crear venta en Firebase", e)
+        }
     }
 
 }
