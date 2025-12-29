@@ -21,6 +21,13 @@ app.use(cors({
 
 app.use("/", router);
 
+app.use((req, res) => {
+    res.status(404).json({
+        error: "Ruta no encontrada",
+        path: req.originalUrl,
+    });
+});
+
 app.listen(PORT, "0.0.0.0", () => {
     console.log(`🚀 Servidor escuchando en puerto ${PORT}`);
 });
