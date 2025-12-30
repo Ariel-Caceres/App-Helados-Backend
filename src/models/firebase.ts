@@ -41,6 +41,9 @@ export const firebaseModel = {
     },
 
     createSale: async (nuevaVenta: Venta) => {
+        if (!nuevaVenta.id) {
+            throw new Error("venta.id es requerido");
+        }
         try {
             await db.collection("ventas").doc(nuevaVenta.id).set(nuevaVenta);
             console.log("Venta creada con éxito en Firebase");
