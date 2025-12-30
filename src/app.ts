@@ -13,8 +13,7 @@ app.use(cors({
     origin: [
         "http://localhost:5173",
         "https://app-helados.vercel.app",
-        "http://localhost:4173/"
-
+        "http://localhost:4173"
     ],
     methods: ["GET", "POST", "PUT", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"],
