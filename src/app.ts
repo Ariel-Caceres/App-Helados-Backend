@@ -15,10 +15,10 @@ app.use(cors({
         "https://app-helados.vercel.app",
         "http://localhost:4173"
     ],
-    methods: ["GET", "POST", "PUT", "DELETE"],
-    allowedHeaders: ["Content-Type", "Authorization"],
+
     credentials: true,
 }));
+app.options("*", cors());
 
 app.use("/", router);
 
