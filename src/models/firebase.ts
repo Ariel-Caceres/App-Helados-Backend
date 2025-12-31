@@ -129,6 +129,15 @@ export const firebaseModel = {
 
     },
 
+    updatePurchase: async (id: string, compraActualizada: Partial<Compra>) => {
+        try {
+            await db.collection("compras").doc(id).update(compraActualizada)
+            console.log("Compra editada exitosamente", compraActualizada.id);
+        } catch (e) {
+            console.log("Error al actualizar compra", e);
+            throw e
+        }
 
+    }
 
 }

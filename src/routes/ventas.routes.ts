@@ -15,6 +15,7 @@ router.get("/purchases", comprasController.getAllPurchases)
 router.post("/purchase", comprasController.createPurchase)
 router.get("/purchase/:id", comprasController.getPurchaseById)
 router.delete("/purchase/:id", comprasController.deletePurchase)
+router.put("/purchase/:id", comprasController.updatePurchase)
 
 
 router.get("/", (_req, res) => {

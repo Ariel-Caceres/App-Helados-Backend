@@ -16,5 +16,7 @@ export const comprasService = {
     async deletePurchase(id: string) {
         return await firebaseModel.deletePurchase(id)
     },
-
+    async updatePurchase(id: string, compraActualizada: Partial<Compra>) {
+        return await firebaseModel.updatePurchase(id, compraActualizada)
+    }
 }

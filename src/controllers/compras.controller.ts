@@ -57,5 +57,21 @@ export const comprasController = {
             res.status(500).json("Error al eliminar la compra")
 
         }
+    },
+
+    async updatePurchase(req: Request, res: Response) {
+        try {
+            const id = req.params.id
+            const { cantidad, precio } = req.body
+            const compraActualizada: Partial<Compra> = {
+                cantidad,
+                precio,
+                status: "synced"
+            }
+            await comprasService.updatePurchase(id, compraActualizada)
+            console.log("Compra actualizada exitosamente", id);
+        } catch (e) {
+            console.log("Error al actualizar la compra", e);
+        }
     }
 }
