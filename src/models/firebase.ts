@@ -1,7 +1,7 @@
 import { db } from "../firebase/conifg"
 import { Compra } from "../types/compra.entity";
 import { Venta } from "../types/venta.entity"
-
+import type { UUID } from "../types/uuid"
 export const firebaseModel = {
 
     getAllSales: async (mes: string) => {
@@ -56,6 +56,7 @@ export const firebaseModel = {
     updateSale: async (id: string, ventaActualizada: Partial<Venta>) => {
         try {
             await db.collection("ventas").doc(id).update(ventaActualizada);
+            console.log("venta a editar", id)
             console.log("Venta editada con éxito");
             return true;
         } catch (e) {
@@ -129,10 +130,10 @@ export const firebaseModel = {
 
     },
 
-    updatePurchase: async (id: string, compraActualizada: Partial<Compra>) => {
+    updatePurchase: async (id: UUID, compraActualizada: Partial<Compra>) => {
         try {
             await db.collection("compras").doc(id).update(compraActualizada)
-            console.log("Compra editada exitosamente", compraActualizada.id);
+            console.log("Compra editada exitosamente", id);
         } catch (e) {
             console.log("Error al actualizar compra", e);
             throw e

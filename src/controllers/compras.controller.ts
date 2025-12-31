@@ -2,6 +2,7 @@ import { comprasService } from "../services/compras.service";
 import { Request, Response } from "express";
 import { Compra } from "../types/compra.entity";
 import { firebaseModel } from "../models/firebase";
+import type { UUID } from "../types/uuid"
 
 export const comprasController = {
     async getAllPurchases(req: Request, res: Response) {
@@ -61,17 +62,16 @@ export const comprasController = {
 
     async updatePurchase(req: Request, res: Response) {
         try {
-            const id = req.params.id
+            const id = req.params.id as UUID
             const { cantidad, precio } = req.body
             const compraActualizada: Partial<Compra> = {
                 cantidad,
                 precio,
-                status: "synced"
             }
             await comprasService.updatePurchase(id, compraActualizada)
-            console.log("Compra actualizada exitosamente", id);
+            res.status(201).json("Compra actualizada con éxito")
         } catch (e) {
-            console.log("Error al actualizar la compra", e);
+            res.status(500).json("Compra actualizada con éxito")
         }
     }
 }
