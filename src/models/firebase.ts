@@ -115,6 +115,20 @@ export const firebaseModel = {
             console.log("Error al obtener el documento", e);
             throw e
         }
-    }
+    },
+
+    deletePurchase: async (id: string) => {
+        try {
+            await db.collection("compras").doc(id).delete()
+            console.log("Compra eliminada con éxito");
+
+        } catch (e) {
+            console.log("Error al eliminar la compra");
+
+        }
+
+    },
+
+
 
 }

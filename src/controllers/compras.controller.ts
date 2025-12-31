@@ -46,5 +46,16 @@ export const comprasController = {
         } catch (e) {
             res.status(500).json({ error: "Error al obtener compra", e })
         }
+    },
+
+    async deletePurchase(req: Request, res: Response) {
+        try {
+            const id = req.params.id
+            await comprasService.deletePurchase(id)
+            res.status(200).json("Compra eliminada exitosamente")
+        } catch (e) {
+            res.status(500).json("Error al eliminar la compra")
+
+        }
     }
 }

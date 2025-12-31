@@ -12,5 +12,9 @@ export const comprasService = {
 
     async getPurchaseById(id: string) {
         return await firebaseModel.getPurchaseById(id)
-    }
+    },
+    async deletePurchase(id: string) {
+        return await firebaseModel.deletePurchase(id)
+    },
+
 }
