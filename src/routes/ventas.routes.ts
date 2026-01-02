@@ -12,10 +12,10 @@ VentasRouter.delete("/delete/:id", ventasController.delete);
 
 
 
-VentasRouter.use((req, res) => {
-    res.status(404).json({
-        error: "Ruta no encontrada",
-        method: req.method,
-        path: req.originalUrl,
-    });
-});
+// VentasRouter.use((req, res) => {
+//     res.status(404).json({
+//         error: "Ruta no encontrada",
+//         method: req.method,
+//         path: req.originalUrl,
+//     });
+// });
