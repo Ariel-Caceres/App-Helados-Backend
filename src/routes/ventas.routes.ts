@@ -3,11 +3,11 @@ import { ventasController } from "../controllers/ventas.controller";
 
 export const VentasRouter = Router();
 
-VentasRouter.get("/sales/:mes", ventasController.getAll);
-VentasRouter.get("/sale/:id", ventasController.getById);
-VentasRouter.post("/sell", ventasController.create);
-VentasRouter.put("/edit/:id", ventasController.update);
-VentasRouter.delete("/delete/:id", ventasController.delete);
+VentasRouter.get("/month/:mes", ventasController.getAll);
+VentasRouter.get("/:id", ventasController.getById);
+VentasRouter.post("/", ventasController.create);
+VentasRouter.put("/:id", ventasController.update);
+VentasRouter.delete("/:id", ventasController.delete);
 
 
 

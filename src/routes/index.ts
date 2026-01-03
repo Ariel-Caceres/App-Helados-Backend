@@ -4,8 +4,8 @@ import { ComprasRouter } from "./compras.routes";
 
 const router = Router();
 
-router.use("/", VentasRouter);
-router.use("/", ComprasRouter);
+router.use("/sales", VentasRouter);
+router.use("/purchases", ComprasRouter);
 
 
 export { router };

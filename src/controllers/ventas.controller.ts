@@ -67,7 +67,7 @@ export const ventasController = {
     async delete(req: Request, res: Response) {
         try {
             const id = req.params.id
-            console.log(id)
+            console.log("venta a eliminar", id)
             await ventasService.delete(id)
             res.status(200).json("Venta eliminada con éxito")
         } catch (e) {
