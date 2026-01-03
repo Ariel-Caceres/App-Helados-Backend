@@ -13,10 +13,3 @@ ComprasRouter.put("/:id", comprasController.updatePurchase)
 
 
 
-ComprasRouter.use((req, res) => {
-    res.status(404).json({
-        error: "Ruta no encontrada",
-        method: req.method,
-        path: req.originalUrl,
-    });
-});
