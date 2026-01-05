@@ -13,7 +13,7 @@ export const firebaseModel = {
             })) as unknown as Venta[];
 
             const ventasPorMes = ventas.filter(v => {
-                const mesVenta = Number(v.fecha.split("-")[1]);
+                const mesVenta = Number(v.fecha.split("-")[1].padStart(2, "0"));
                 const mesBuscado = Number(mes);
                 return mesVenta === mesBuscado;
             });
