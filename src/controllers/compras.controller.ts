@@ -19,12 +19,13 @@ export const comprasController = {
     async createPurchase(req: Request, res: Response) {
 
         try {
-            const { id, precio, cantidad, fecha } = req.body
+            const { id, precio, cantidad, fecha, producto } = req.body
             if (!id || !precio || !cantidad || !fecha) {
                 res.status(500).json("faltan datos obligatorios")
                 return
             }
             const nuevaCompra: Compra = {
+                producto: producto,
                 id: id,
                 fecha: fecha,
                 cantidad: cantidad,

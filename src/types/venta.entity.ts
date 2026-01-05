@@ -1,6 +1,7 @@
 
 
 export interface Venta {
+    producto?: string
     id: string,
     fecha: string,
     cantidad: number,

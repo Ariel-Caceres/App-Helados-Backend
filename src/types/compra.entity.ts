@@ -1,4 +1,5 @@
 export interface Compra {
+    producto?: string
     id: string
     fecha: string,
     precio: number,

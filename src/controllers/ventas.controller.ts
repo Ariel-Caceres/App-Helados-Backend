@@ -31,8 +31,9 @@ export const ventasController = {
     async create(req: Request, res: Response) {
 
         try {
-            const { precio, precioTotal, cantidad, id, fecha } = req.body
+            const { precio, precioTotal, cantidad, id, fecha, producto } = req.body
             const nuevaVenta: Venta = {
+                producto: producto,
                 id: id,
                 fecha: fecha,
                 precio: precio,
