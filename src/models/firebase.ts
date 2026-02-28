@@ -2,6 +2,7 @@ import { db } from "../firebase/conifg"
 import { Compra } from "../types/compra.entity";
 import { Venta } from "../types/venta.entity"
 import type { UUID } from "../types/uuid"
+import type { Producto } from "../types/producto.entity";
 export const firebaseModel = {
 
     getAllSales: async (mes: string) => {
@@ -139,6 +140,15 @@ export const firebaseModel = {
             throw e
         }
 
+    },
+
+    createProduct: async (nuevoProducto: Producto) => {
+        try {
+            await db.collection("productos").doc(nuevoProducto.id).set(nuevoProducto)
+            console.log("Producto creado con éxito");
+        } catch (e) {
+            console.log("Error al crear el producto", e);
+        }
     }
 
 }
