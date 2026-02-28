@@ -1,5 +1,8 @@
 import { Request, Response } from "express"
 import { productosService } from "../services/productos.service"
+import { Producto } from "../types/producto.entity"
+import { UUID } from "../types/uuid"
+import { json } from "node:stream/consumers"
 export const productosController = {
     async createProduct(req: Request, res: Response) {
         try {
@@ -30,6 +33,21 @@ export const productosController = {
             res.json(productos)
         } catch (e) {
             console.log("");
+        }
+    },
+    async updateProduct(req: Request, res: Response) {
+        try {
+            const id = req.params.id as UUID
+            const { nombre, precio, unidad } = req.body
+            const productoActualizado = {
+                nombre,
+                precio,
+                unidad
+            }
+            res.status(201).json("Producto actualizado con éxito")
+            await productosService.update(id, productoActualizado)
+        } catch (e) {
+            res.status(500).json("Error al actualizar el producto")
         }
     }
 }

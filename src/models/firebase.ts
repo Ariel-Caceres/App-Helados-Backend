@@ -161,6 +161,14 @@ export const firebaseModel = {
         } catch (e) {
             console.log("Error al traer los productos", e);
         }
+    },
+    updateProduct: async (id: UUID, productoActualizado: Partial<Producto>) => {
+        try {
+            await db.collection("productos").doc(id).update(productoActualizado)
+        } catch (e) {
+            console.log("Error al actualizar el producto", e);
+            throw e
+        }
     }
 
 }

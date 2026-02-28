@@ -4,3 +4,4 @@ export const productosRouter = Router()
 
 productosRouter.post("/", productosController.createProduct)
 productosRouter.get("/", productosController.getAll)
+productosRouter.put("/", productosController.updateProduct)
