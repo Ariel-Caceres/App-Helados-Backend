@@ -149,6 +149,18 @@ export const firebaseModel = {
         } catch (e) {
             console.log("Error al crear el producto", e);
         }
+    },
+    getAllProducts: async () => {
+        try {
+            const querySnapshot = await db.collection("productos").get()
+            const productos = querySnapshot.docs.map(doc => ({
+                id: doc.id,
+                ...doc.data()
+            }) as unknown as Producto)
+            return productos
+        } catch (e) {
+            console.log("Error al traer los productos", e);
+        }
     }
 
 }

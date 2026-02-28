@@ -23,5 +23,13 @@ export const productosController = {
             res.status(500).json("Error al crear el nuevo producto")
 
         }
+    },
+    async getAll(req: Request, res: Response) {
+        try {
+            const productos = await productosService.getAll()
+            res.json(productos)
+        } catch (e) {
+            console.log("");
+        }
     }
 }
