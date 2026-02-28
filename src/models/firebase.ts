@@ -176,7 +176,7 @@ export const firebaseModel = {
     deleteProduct: async (id: UUID) => {
         try {
             await db.collection("productos").doc(id).delete()
-            console.log("Producto eliminado con écito")
+            console.log("Producto eliminado con éxito")
         } catch (e) {
             console.log("Error al eliminar el producto", e);
 
