@@ -150,6 +150,7 @@ export const firebaseModel = {
             console.log("Error al crear el producto", e);
         }
     },
+
     getAllProducts: async () => {
         try {
             const querySnapshot = await db.collection("productos").get()
@@ -162,12 +163,23 @@ export const firebaseModel = {
             console.log("Error al traer los productos", e);
         }
     },
+
     updateProduct: async (id: UUID, productoActualizado: Partial<Producto>) => {
         try {
             await db.collection("productos").doc(id).update(productoActualizado)
         } catch (e) {
             console.log("Error al actualizar el producto", e);
             throw e
+        }
+    },
+
+    deleteProduct: async (id: UUID) => {
+        try {
+            await db.collection("productos").doc(id).delete()
+            console.log("Producto eliminado con écito")
+        } catch (e) {
+            console.log("Error al eliminar el producto", e);
+
         }
     }
 

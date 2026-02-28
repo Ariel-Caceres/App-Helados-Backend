@@ -6,11 +6,16 @@ export const productosService = {
     async createProduct(nuevoProducto: Producto) {
         return await firebaseModel.createProduct(nuevoProducto)
     },
+
     async getAll() {
         return await firebaseModel.getAllProducts()
     },
+
     async update(id: UUID, productoActualizado: Partial<Producto>) {
         return await firebaseModel.updateProduct(id, productoActualizado)
+    },
 
+    async delete(id: UUID) {
+        return await firebaseModel.deleteProduct(id)
     }
 }

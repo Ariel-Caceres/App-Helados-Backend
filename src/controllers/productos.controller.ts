@@ -1,8 +1,6 @@
 import { Request, Response } from "express"
 import { productosService } from "../services/productos.service"
-import { Producto } from "../types/producto.entity"
 import { UUID } from "../types/uuid"
-import { json } from "node:stream/consumers"
 export const productosController = {
     async createProduct(req: Request, res: Response) {
         try {
@@ -27,6 +25,7 @@ export const productosController = {
 
         }
     },
+
     async getAll(req: Request, res: Response) {
         try {
             const productos = await productosService.getAll()
@@ -35,6 +34,7 @@ export const productosController = {
             console.log("");
         }
     },
+
     async updateProduct(req: Request, res: Response) {
         try {
             const id = req.params.id as UUID
@@ -48,6 +48,16 @@ export const productosController = {
             await productosService.update(id, productoActualizado)
         } catch (e) {
             res.status(500).json("Error al actualizar el producto")
+        }
+    },
+
+    async deleteProduct(req: Request, res: Response) {
+        try {
+            const id = req.params.id as UUID
+            await productosService.delete(id)
+            res.status(200).json("Éxito al eliminar el producto")
+        } catch (e) {
+            res.status(500).json("Error al eliminar el producto")
         }
     }
 }
