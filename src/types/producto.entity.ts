@@ -1,8 +1,9 @@
-import { UUID } from "node:crypto";
+import type { UUID } from "./uuid"
 
 export interface Producto {
     id: UUID,
     nombre: string,
     unidad: string,
-    precio: number
+    precio: number,
+    categoria: string
 }

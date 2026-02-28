@@ -4,7 +4,7 @@ import { UUID } from "../types/uuid"
 export const productosController = {
     async createProduct(req: Request, res: Response) {
         try {
-            const { id, nombre, precio, unidad } = req.body
+            const { id, nombre, precio, unidad, categoria } = req.body
             if (!id || !nombre || !precio || !unidad) {
                 res.status(500).json("Falta data clave")
                 return
@@ -13,7 +13,8 @@ export const productosController = {
                 id,
                 nombre,
                 precio,
-                unidad
+                unidad,
+                categoria
             }
             await productosService.createProduct(producto)
             res.status(200).json("Producto creado con éxito")
