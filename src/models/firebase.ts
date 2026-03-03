@@ -96,12 +96,35 @@ export const firebaseModel = {
         }
     },
 
-    createPurchase: async (nuevaCompra: Compra) => {
+    async createPurchase(nuevaCompra: Compra) {
         try {
-            await db.collection("compras").doc(nuevaCompra.id).set(nuevaCompra)
-            console.log("Compra creada con éxito en Firebase")
+
+            const comprasRef = db.collection("compras")
+
+            // 1️⃣ Buscar compra activa DEL MISMO PRODUCTO
+            const query = await comprasRef
+                .where("producto", "==", nuevaCompra.producto)
+                .where("lote", "==", "activo")
+                .limit(1)
+                .get()
+
+            // 2️⃣ Cerrar la anterior si existe
+            if (!query.empty) {
+                const compraActiva = query.docs[0]
+
+                await compraActiva.ref.update({
+                    lote: "cerrado"
+                })
+            }
+
+            // 3️⃣ Crear nueva compra activa
+            await comprasRef.doc(nuevaCompra.id).set(nuevaCompra)
+
+            console.log("Compra creada y lote anterior cerrado correctamente")
+
         } catch (e) {
-            console.log("Error al crear venta en Firebase", e)
+            console.log("Error en service createPurchase", e)
+            throw e
         }
     },
 
@@ -213,7 +236,6 @@ export const firebaseModel = {
                 ...doc.data()
             })) as unknown as Venta[];
 
-            console.log(compra, ventas);
 
             return { compra, ventas }
 
