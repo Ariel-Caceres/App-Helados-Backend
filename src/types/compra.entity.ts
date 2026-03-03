@@ -4,5 +4,6 @@ export interface Compra {
     fecha: string,
     precio: number,
     cantidad: number,
-    status: "synced" | "pending-create" | "pending-update" | "pending-delete"
+    status: "synced" | "pending-create" | "pending-update" | "pending-delete",
+    lote: "activo" | "cerrado"
 }
