@@ -9,18 +9,19 @@ const PORT = process.env.PORT
     : 3000;
 
 app.use(express.json());
+
 app.use(cors({
     origin: [
         "http://localhost:5173",
-        "https://app-helados.vercel.app",
-        "http://localhost:4173"
+        "http://localhost:4173",
+        "https://app-helados.vercel.app"
     ],
-
-    credentials: true,
+    credentials: false,
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    allowedHeaders: ["Content-Type"]
 }));
 
 app.use("/", router);
-
 
 app.listen(PORT, "0.0.0.0", () => {
     console.log(`🚀 Servidor escuchando en puerto ${PORT}`);
