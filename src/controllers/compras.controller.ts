@@ -30,7 +30,8 @@ export const comprasController = {
                 fecha: fecha,
                 cantidad: cantidad,
                 precio: precio,
-                status: "synced"
+                status: "synced",
+                lote: "activo"
             }
             await comprasService.createPurchase(nuevaCompra)
             res.status(200).json("Compra creada con éxito")

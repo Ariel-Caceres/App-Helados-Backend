@@ -181,6 +181,47 @@ export const firebaseModel = {
             console.log("Error al eliminar el producto", e);
 
         }
+    },
+
+    getLastLote: async (producto: string) => {
+
+        try {
+            const snapshot = await db
+                .collection("compras")
+                .where("lote", "==", "activo")
+                .where("producto", "==", producto)
+                .get()
+
+            if (snapshot.empty) return null
+
+            const compraDoc = snapshot.docs[0]
+
+            const compra = {
+                id: compraDoc.id,
+                ...compraDoc.data()
+            } as unknown as Compra
+
+            const fechaCompra = compra.fecha
+            const snapshotVentas = await db
+                .collection("ventas")
+                .where("producto", "==", producto)
+                .where("fecha", ">=", fechaCompra)
+                .get()
+
+            const ventas = snapshotVentas.docs.map(doc => ({
+                id: doc.id,
+                ...doc.data()
+            })) as unknown as Venta[];
+
+            console.log(compra, ventas);
+
+            return { compra, ventas }
+
+
+        } catch (e) {
+            console.error(e)
+            throw e
+        }
     }
 
 }
